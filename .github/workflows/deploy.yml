@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-push:
-        runs-on: [self-hosted, lakron]
+        runs-on: [self-hosted]
 
     steps:
       - name: Checkout code
