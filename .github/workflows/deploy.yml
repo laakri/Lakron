@@ -28,10 +28,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/lakron:latest
           build-args: |
             VITE_ENCRYPTION_KEY=${{ secrets.VITE_ENCRYPTION_KEY }}
             VITE_SUPABASE_URL=${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_KEY=${{ secrets.VITE_SUPABASE_KEY }}
             VITE_SUPABASE_ANON_KEY=${{ secrets.VITE_SUPABASE_ANON_KEY }}
             VITE_CACHE_KEY=${{ secrets.VITE_CACHE_KEY }}
+
