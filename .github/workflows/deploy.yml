@@ -28,12 +28,11 @@ jobs:
 
       - name: Build frontend and move output to root folder
         run: |
-          cd ${{ github.workspace }}/Lakron/Lakron
+          cd ${{ github.workspace }}
           npm ci
           npm run build
-
-          # Copy built files to root project directory
-          cp -r dist/* ${{ github.workspace }}
+          cp -r dist/* ${{ github.workspace }}/..
+        
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
