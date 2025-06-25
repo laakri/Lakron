@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,7 +23,11 @@ const Layout: React.FC<LayoutProps> = ({ children, tasks = [] }) => {
   return (
     <div className="min-h-screen bg-background relative">
       {/* Header Section - Always at top */}
-      <div className="w-full pt-8 pb-6">
+      <div className="w-full pt-8 pb-6 relative">
+        {/* Super small theme toggle button in top-right */}
+        <div className="absolute top-4 right-4 z-10">
+          <ModeToggle />
+        </div>
         <div className="max-w-md mx-auto px-4">
           <Card className="bg-transparent border-none">
             <CardContent className="text-center">

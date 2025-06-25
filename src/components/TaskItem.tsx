@@ -122,12 +122,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
     }
   };
 
-  const handleDelete = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onDelete) onDelete(task.id);
-    controls.start({ x: 0 });
-    isSwiped.current = false;
-  };
 
   const handleCardClick = () => {
     if (isSwiped.current) {
@@ -148,33 +142,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
 
   return (
     <div className="relative group">
-      {/* Delete button: visible on swipe (mobile) or hover (desktop) */}
+      {/* Always-visible small delete button on the right */}
       {onDelete && (
-        <motion.button
-          initial={false}
-          animate={isSwiped.current ? { x: 0, opacity: 1 } : { x: 80, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          className={`
-            absolute right-0 top-0 bottom-0 w-16 h-full
-            flex items-center justify-center
-            bg-red-500 hover:bg-red-600
-            text-white font-bold text-lg
-            rounded-r-lg
-            z-10
-            transition-all duration-200
-            focus:outline-none
-            border-0
-            shadow-none
-            select-none
-            group-hover:opacity-100
-            ${isSwiped.current ? 'opacity-100' : 'opacity-0'}
-          `}
-          onClick={handleDelete}
-          style={{ touchAction: 'none' }}
+        <button
+          className="ml-2 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900 text-red-500 transition-colors absolute right-2 top-1/2 -translate-y-1/2 z-20 md:static md:translate-y-0"
+          onClick={e => { e.stopPropagation(); onDelete(task.id); }}
           aria-label="Delete"
+          type="button"
         >
-          <Trash className="w-6 h-6" />
-        </motion.button>
+          <Trash className="w-4 h-4" />
+        </button>
       )}
       <motion.div
         ref={cardRef}
@@ -187,21 +164,24 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
           p-4 mb-2 cursor-pointer transition-all duration-200
           hover:scale-[1.02] active:scale-[0.98]
           ${task.completed ? 'opacity-50' : ''}
-          ${task.recurring && !isDueToday ? 'opacity-40 cursor-not-allowed' : ''}
+          ${task.recurring && !isTaskDueToday(task) ? 'opacity-40 cursor-not-allowed' : ''}
           ${isOverdue ? 'border-l-4 border-l-orange-400' : ''}
           border-none bg-muted/50
           rounded-lg
           relative
           shadow
           dark:shadow-none
+          flex flex-col md:flex-row md:items-center md:justify-between
+          w-full
         `}
         onClick={handleCardClick}
         // Show delete button on hover (desktop)
         onMouseEnter={() => { if (onDelete && !isSwiped.current) controls.start({ x: -90 }); }}
         onMouseLeave={() => { if (onDelete && !isSwiped.current) controls.start({ x: 0 }); }}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col md:flex-row md:items-center gap-2 w-full">
+          {/* Left: Checkbox, title, badges */}
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             {/* Checkbox circle */}
             <div 
               className={`
@@ -273,7 +253,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete }) => {
             )}
           </div>
           
-          <div className="flex items-center gap-2">
+          {/* Right: Time and type badges */}
+          <div className="flex items-center gap-2 flex-shrink-0 mt-2 md:mt-0">
             {/* Time badge */}
             <Badge variant="outline" className="flex items-center gap-1">
               <Clock className="w-3 h-3" />

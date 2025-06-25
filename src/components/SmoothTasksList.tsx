@@ -116,12 +116,11 @@ export function SmoothTasksList<T>({
   if (tasks.length === 0) return <>{emptyState}</>;
 
   return (
-    <div className={`relative ${className} bg-transparent `}>
-  
+    <div className={`relative ${className} bg-transparent w-full`}>
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="relative overflow-y-auto overflow-x-hidden max-w-full w-full"
+        className="relative overflow-y-auto overflow-x-auto max-w-full w-full"
         style={{
           maxHeight,
           WebkitOverflowScrolling: 'touch',
@@ -131,13 +130,13 @@ export function SmoothTasksList<T>({
         }}
       >
         <div
-          className="relative "
+          className="relative w-full"
           style={shouldAnimate ? { perspective: '1000px' } : {}}
         >
           {tasks.map((task, index) => (
             <div
               key={(task as any).id || index}
-              className="relative mb-2  max-w-full w-full"
+              className="relative mb-2 max-w-full w-full"
               style={getItemStyle(index)}
             >
               <div className="transform-gpu w-full">
